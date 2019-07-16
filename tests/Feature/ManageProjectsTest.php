@@ -6,12 +6,18 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_create_projects()
+    public function guests_cannot_view_projects_create_page()
+    {
+        $this->get('/projects/create')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guest_cannot_create_projects()
     {
         $attributes = factory('App\Project')->raw();
 
@@ -19,9 +25,25 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
+    public function guests_cannot_view_projects_page()
+    {
+        $this->get('/projects')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guests_cannot_view_a_single_project_page()
+    {
+        $project = factory('App\Project')->create();
+
+        $this->get($project->path())->assertRedirect('login');
+    }
+
+    /** @test */
     public function a_user_can_create_a_project()
     {
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
+        
+        $this->get('/projects/create')->assertStatus(200);
 
         $attributes = [
             'title' => $this->faker->sentence,
@@ -36,9 +58,11 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_project()
+    public function a_user_can_view_their_project_page()
     {
-        $project = factory('App\Project')->create();
+        $this->signIn();
+
+        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
 
         $this->get($project->path())
             ->assertSee($project->title)
@@ -46,9 +70,19 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
+    public function an_authenticated_user_cannot_view_the_projects_of_others()
+    {
+        $this->signIn();
+
+        $project = factory('App\Project')->create();
+
+        $this->get($project->path())->assertStatus(403);
+    }
+
+    /** @test */
     public function a_project_requires_a_title()
     {   
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
 
         $attributes = factory('App\Project')->raw(['title' => '']);
 
@@ -58,7 +92,7 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_project_requires_a_description()
     {
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
 
         $attributes = factory('App\Project')->raw(['description' => '']);
 

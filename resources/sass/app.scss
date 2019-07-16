@@ -1,8 +1,27 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
+
+// Tailwind
+@import "~tailwindcss/base";
+@import "~tailwindcss/components";
+@import "~tailwindcss/utilities";
+
+// Custom Styling
+.card {
+    @apply .bg-white .rounded .shadow .py-5;
+}
+
+.card-title {
+    @apply .font-normal .text-xl .mb-4 .px-5 .py-1 .border-l-4;
+}
+
+.card-description {
+    @apply .px-5 .text-gray-600 .font-light;
+}
+
+.task-card {
+    @apply .bg-white .rounded .shadow .p-4 .mb-3;
+}

@@ -25,3 +25,11 @@
 .task-card {
     @apply .bg-white .rounded .shadow .p-4 .mb-3;
 }
+
+.button {
+    @apply .bg-blue-500 .text-white .font-normal .py-2 .px-4 .rounded;
+}
+
+.button:hover {
+    @apply .bg-blue-700;
+}

@@ -1,28 +1,13 @@
-@extends('layouts.app')
+@extends ('layouts.app')
 
 @section('content')
-
-    <form action="/projects" method="POST">
-        @csrf
-        <h1 class="heading is-1">Create a Project</h1>
-        <div class="field">
-            <label for="title" class="label">Title</label>
-            <div class="control">
-                <input type="text" class="input" name="title" placeholder="Title">
-            </div>
-        </div>
-        <div class="field">
-            <label for="description" class="label">Description</label>
-            <div class="control">
-                <textarea name="description" class="textarea"></textarea>
-            </div>
-        </div>
-        <div class="field">
-            <div class="control">
-                <button type="submit" class="button is-link">Create Project</button>
-                <a href="/projects">Cancel</a>
-            </div>
-        </div>
-    </form>
-
+    <div class="lg:w-1/2 lg:mx-auto bg-white py-8 px-12 mt-2 rounded shadow">
+        <h1 class="text-2xl font-normal mb-8 text-center">Let's start something new</h1>
+        <form method="POST" action="/projects">
+            @include('projects.form', [
+                'project' => new App\Project,
+                'btnText' => 'Create Project'
+            ])
+        </form>
+    </div>
 @endsection

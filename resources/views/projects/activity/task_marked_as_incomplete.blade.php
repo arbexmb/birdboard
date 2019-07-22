@@ -1,0 +1,1 @@
+{{ $activity->userName() }} marked <span class="text-red-500">"{{ $activity->subject->body }}"</span> as incomplete

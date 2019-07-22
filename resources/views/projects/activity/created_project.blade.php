@@ -1,0 +1,1 @@
+{{ $activity->userName() }} created a project

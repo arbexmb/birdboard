@@ -7570,13 +7570,6 @@ video {
   border-left-width: 4px;
 }
 
-.card-description {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  color: #718096;
-  font-weight: 300;
-}
-
 .task-card {
   background-color: #fff;
   border-radius: 0.25rem;
@@ -7598,6 +7591,11 @@ video {
 
 .button:hover {
   background-color: #2b6cb0;
+}
+
+.avatar-picture {
+  border-radius: 9999px;
+  margin-left: -0.5rem;
 }
 
 @media (min-width: 640px) {

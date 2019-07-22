@@ -74,12 +74,20 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    function a_user_can_see_all_projects_they_have_been_invited_to_on_their_dashboard()
+    {
+        $project = tap(ProjectFactory::create())->invite($this->signIn());
+
+        $this->get('/projects')->assertSee($project->title);
+    }
+
+    /** @test */
     public function a_user_can_update_a_project()
     {
         $project = ProjectFactory::create();
 
         $this->actingAs($project->owner)
-            ->patch($project->path(), $attributes = ['title' => 'Changed title', 'description'=> 'Changed description', 'notes' => 'changed: a user can update a project'])
+            ->patch($project->path(), $attributes = ['title' => 'Changed title', 'description'=> 'Changed description', 'notes' => 'changed notes'])
             ->assertRedirect($project->path());
 
         $this->get($project->path() . '/edit')->assertOk();
@@ -87,7 +95,7 @@ class ManageProjectsTest extends TestCase
         $this->assertDatabaseHas('projects', $attributes);
 
         $this->get($project->path())
-            ->assertSee('changed: a user can update a project');
+            ->assertSee('changed notes');
     }
 
     /** @test */
@@ -105,6 +113,30 @@ class ManageProjectsTest extends TestCase
             ->assertSee($attributes['notes']);
     }
 
+    /** @test */
+    public function a_user_can_delete_a_project()
+    {
+        $project = ProjectFactory::create();
+
+        $this->actingAs($project->owner)
+            ->delete($project->path())
+            ->assertRedirect('/projects');
+        
+        $this->assertDatabaseMissing('projects', $project->only('id'));
+    }
+
+    /** @test */
+    public function unauthorized_users_cannot_delete_a_project()
+    {
+        $project = ProjectFactory::create();
+
+        $this->delete($project->path())->assertRedirect('/login');
+
+        $this->signIn();
+
+        $this->delete($project->path())->assertStatus(403);
+    }
+    
     /** @test */
     public function a_user_can_view_their_project_page()
     {

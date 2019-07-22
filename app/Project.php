@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
+
+    protected static $recordableEvents = ['created', 'updated'];
 
     public function path()
     {
@@ -30,14 +34,16 @@ class Project extends Model
 
     public function activity()
     {
-        return $this->hasMany('App\Activity');
+        return $this->hasMany('App\Activity')->latest();
     }
 
-    public function recordActivity($type)
+    public function invite (User $user)
     {
-        Activity::create([
-            'project_id' => $this->id,
-            'description' => $type
-        ]);
+        return $this->members()->attach($user);
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany('App\User', 'project_members')->withTimestamps();
     }
 }

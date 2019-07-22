@@ -2,11 +2,27 @@
 
 @section('content')
 
-    <header class="flex items-end mb-3 py-3">
-        <p class="mr-auto text-sm text-gray-500">
-            <a href="/projects">My Projects</a> / {{ $project->title }}
-        </p>
-        <a href="{{ $project->path() . '/edit' }}" class="button">Edit Project</a>
+    <header class="flex items-center mb-3 py-3">
+        <div class="flex justify-between items-end w-full">
+            <p class="mr-auto text-sm text-gray-500">
+                <a href="/projects">My Projects</a> / {{ $project->title }}
+            </p>
+            <div class="flex items-center">
+                @foreach($project->members as $member)
+                    <img
+                        src="{{ gravatar_url($member->email) }}" 
+                        alt="{{ $member->name }}'s avatar" 
+                        class="avatar-picture" 
+                        style="max-width:40px;" />
+                @endforeach
+                <img 
+                    src="{{ gravatar_url($project->owner->email) }}" 
+                    alt="{{ $project->owner->name }}'s avatar" 
+                    class="avatar-picture" 
+                    style="max-width:40px;" />
+                <a href="{{ $project->path() . '/edit' }}" class="button ml-3">Edit Project</a>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -47,17 +63,16 @@
                         >{{ $project->notes }}</textarea>
                         <button type="submit" class="button">Save</button>
                     </form>
-                    @if($errors->any())
-                        <div class="field mt-4">
-                            @foreach($errors->all() as $error)
-                                <li class="text-sm text-red-700">{{ $error }}</li>
-                            @endforeach
-                        </div>
-                    @endif
+                    @include('errors')
                 </div>
             </div>
             <div class="lg:w-1/3 mt-6 lg:mt-0 px-2">
                 @include('projects.card')
+                @include('projects.activity.card')
+
+                @can('administer', $project)
+                    @include('projects.invite')
+                @endcan
             </div>
         </div>
     </main>

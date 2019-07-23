@@ -1,8 +1,7 @@
-@if(\Request::route()->uri() === 'projects')
-<div class="card h-full">
-@else
-<div class="card">
-@endif
+<div class="card {{ \Request::route()->uri() === 'projects' ? 'h-full' : '' }} relative">
+    @if(auth()->user()->is($project->owner))
+        <span class="owner-badge">#owner</span>
+    @endif
     <h3 class="card-title border-blue-300">
         <a href="{{ $project->path() }}">{{ $project->title }}</a>
     </h3>

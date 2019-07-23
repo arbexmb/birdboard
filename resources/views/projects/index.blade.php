@@ -4,7 +4,7 @@
 
     <header class="flex items-end mb-3 py-3">
         <p class="mr-auto text-sm text-gray-500">My Projects</p>
-        <a href="/projects/create" class="button">Add Project</a>
+        <a href="/projects/create" class="button" @click.prevent="$modal.show('new-project')">Add Project</a>
     </header>
 
     <main class="lg:flex lg:flex-wrap -mx-2">
@@ -15,6 +15,7 @@
         @empty
             <p>No projects yet.</p>
         @endforelse
-        </main>
-    
+    </main>
+
+    <new-project-modal></new-project-modal>
 @endsection

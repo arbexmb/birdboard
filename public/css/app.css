@@ -7626,6 +7626,21 @@ video {
   right: 0;
 }
 
+.dropdown-toggle > button:focus {
+  outline: 0;
+}
+
+.dropdown-menu-link {
+  display: block;
+  font-size: 0.875rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.dropdown-menu-link:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

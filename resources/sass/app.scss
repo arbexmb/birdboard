@@ -41,3 +41,17 @@
 .owner-badge {
     @apply .bg-gray-200 .rounded-full .px-3 .py-1 .text-sm .font-semibold .text-gray-700 .absolute .mr-5 .right-0;
 }
+
+.dropdown-toggle {
+    > button:focus {
+        outline: 0;
+    }
+}
+
+.dropdown-menu-link {
+    @apply .block .text-sm .px-4;
+
+    &:hover {
+        background: rgba(0,0,0,0.1);
+    }
+}

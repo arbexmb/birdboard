@@ -32,7 +32,7 @@
 
                     <div>
                         <!-- Right Side Of Navbar -->
-                        <div class="navbar-nav ml-auto">
+                        <div class="navbar-nav ml-auto relative">
                             <!-- Authentication Links -->
                             @guest
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -40,23 +40,25 @@
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 @endif
                             @else
-                                <a id="navbarDropdown"
-                                    class="nav-link dropdown-toggle flex items-center"
-                                    href="#" 
-                                    role="button" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    aria-expanded="false" 
-                                    v-pre
-                                >
-                                    <img
-                                        src="{{ gravatar_url(auth()->user()->email) }}" 
-                                        alt="{{ auth()->user()->name }}'s avatar" 
-                                        class="avatar-picture mr-2" 
-                                        style="max-width:40px;"
-                                    />
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+
+                                <dropdown align="right">
+                                    <template v-slot:trigger>
+                                        <button class="nav-link dropdown-toggle flex items-center">
+                                            <img
+                                                src="{{ gravatar_url(auth()->user()->email) }}" 
+                                                alt="{{ auth()->user()->name }}'s avatar" 
+                                                class="avatar-picture mr-2" 
+                                                style="max-width:40px;"
+                                            />
+                                            {{ auth()->user()->name }} <span class="caret"></span>
+                                        </button>
+                                    </template>
+                                    <form action="/logout" method="post">
+                                        @csrf
+                                        <button type="submit" class="dropdown-menu-link">Logout</button>
+                                    </form>
+                                </dropdown>
+
                             @endguest
                         </div>
                     </div>
